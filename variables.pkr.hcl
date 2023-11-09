@@ -281,3 +281,33 @@ variable "security_group_id" {
   default     = ""
 }
 
+variable "ecr_token" {
+  type = string
+  description = "ECR registry token."
+  default = ""
+}
+
+variable "image_registry" {
+  type        = string
+  description = "ECR registry containing image to bake into ami."
+  default     = ""
+}
+
+variable "image_repository" {
+  type        = string
+  description = "Repository of ECR image to bake into ami."
+  default     = ""
+}
+
+variable "image_tag" {
+  type        = string
+  description = "Tag of ECR image to bake into ami."
+  default     = ""
+}
+
+variable "image_local_name" {
+  type        = string
+  description = "Local FQDN of ECR image to bake into ami."
+  default     = ""
+}
+
