@@ -210,6 +210,14 @@ build {
   }
 
   provisioner "shell" {
+    environment_vars = [
+      "AMI_TYPE=${source.name}",
+      "AIR_GAPPED=${var.air_gapped}"
+    ]
+    script = "scripts/optimize-gpu-conf.sh"
+  }
+
+  provisioner "shell" {
     inline_shebang = "/bin/sh -ex"
     inline = [
       "sudo usermod -a -G docker ec2-user"
