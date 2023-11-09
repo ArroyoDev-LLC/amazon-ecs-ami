@@ -262,3 +262,22 @@ variable "region_dns_suffix" {
   description = "DNS Suffix to use for in region URLs"
   default     = ""
 }
+
+variable "subnet_id" {
+  type        = string
+  description = "Subnet ID to use for building image."
+  default     = ""
+}
+
+variable "vpc_id" {
+  type        = string
+  description = "VPC id to use for building image."
+  default     = ""
+}
+
+variable "security_group_id" {
+  type        = string
+  description = "Security group ID to use for building image."
+  default     = ""
+}
+
