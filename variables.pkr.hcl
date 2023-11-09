@@ -238,3 +238,22 @@ variable "ebs_csi_driver_version" {
   description = "EBS CSI driver version to build AMI with."
   default     = ""
 }
+
+variable "subnet_id" {
+  type        = string
+  description = "Subnet ID to use for building image."
+  default     = ""
+}
+
+variable "vpc_id" {
+  type        = string
+  description = "VPC id to use for building image."
+  default     = ""
+}
+
+variable "security_group_id" {
+  type        = string
+  description = "Security group ID to use for building image."
+  default     = ""
+}
+
