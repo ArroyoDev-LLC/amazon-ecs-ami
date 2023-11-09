@@ -225,6 +225,18 @@ build {
   }
 
   provisioner "shell" {
+    environment_vars = [
+      "REGION=${var.region}",
+      "IMAGE_REGISTRY=${var.image_registry}",
+      "IMAGE_REPOSITORY=${var.image_repository}",
+      "IMAGE_TAG=${var.image_tag}",
+      "IMAGE_LOCAL_NAME=${var.image_local_name}",
+      "ECR_TOKEN=${var.ecr_token}"
+    ]
+    script = "scripts/bake-docker.sh"
+  }
+
+  provisioner "shell" {
     script = "scripts/enable-services.sh"
   }
 
@@ -247,4 +259,5 @@ build {
     output     = "manifest.json"
     strip_path = true
   }
+
 }
