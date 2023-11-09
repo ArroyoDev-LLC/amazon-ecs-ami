@@ -18,7 +18,7 @@ source "amazon-ebs" "al2gpu" {
   launch_block_device_mappings {
     volume_size           = var.block_device_size_gb
     delete_on_termination = true
-    volume_type           = "gp2"
+    volume_type           = "gp3"
     device_name           = "/dev/xvda"
   }
   metadata_options {
