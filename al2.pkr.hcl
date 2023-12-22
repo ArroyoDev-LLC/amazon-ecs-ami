@@ -210,30 +210,10 @@ build {
   }
 
   provisioner "shell" {
-    environment_vars = [
-      "AMI_TYPE=${source.name}",
-      "AIR_GAPPED=${var.air_gapped}"
-    ]
-    script = "scripts/optimize-gpu-conf.sh"
-  }
-
-  provisioner "shell" {
     inline_shebang = "/bin/sh -ex"
     inline = [
       "sudo usermod -a -G docker ec2-user"
     ]
-  }
-
-  provisioner "shell" {
-    environment_vars = [
-      "REGION=${var.region}",
-      "IMAGE_REGISTRY=${var.image_registry}",
-      "IMAGE_REPOSITORY=${var.image_repository}",
-      "IMAGE_TAG=${var.image_tag}",
-      "IMAGE_LOCAL_NAME=${var.image_local_name}",
-      "ECR_TOKEN=${var.ecr_token}"
-    ]
-    script = "scripts/bake-docker.sh"
   }
 
   provisioner "shell" {
