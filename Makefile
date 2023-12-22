@@ -47,7 +47,7 @@ packer-fmt: packer
 
 .PHONY: validate
 validate: check-region init
-	./packer validate -var "region=${REGION}" .
+	./packer validate -var-file illumibot.pkrvars.hcl -var "region=${REGION}" .
 
 .PHONY: al1
 al1: check-region init validate release-al1.auto.pkrvars.hcl
@@ -104,6 +104,11 @@ al2023neu: check-region init validate release-al2023.auto.pkrvars.hcl
 .PHONY: al2023gpu
 al2023gpu: check-region init validate release-al2023.auto.pkrvars.hcl
 	./packer build -only="amazon-ebs.al2023gpu" -var "region=${REGION}" .
+
+.PHONY: illumibot
+illumibot: check-region init validate release.auto.pkrvars.hcl
+	./packer build -only="amazon-ebs.illumibot" -var "region=${REGION}" -var-file illumibot.pkrvars.hcl .
+
 
 shellcheck:
 	curl -fLSs ${SHELLCHECK_URL} -o /tmp/shellcheck.tar.xz
