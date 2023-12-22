@@ -282,9 +282,9 @@ variable "security_group_id" {
 }
 
 variable "ecr_token" {
-  type = string
+  type        = string
   description = "ECR registry token."
-  default = ""
+  default     = ""
 }
 
 variable "image_registry" {
@@ -309,5 +309,21 @@ variable "image_local_name" {
   type        = string
   description = "Local FQDN of ECR image to bake into ami."
   default     = ""
+}
+
+#variable "ami_version_illumibot" {
+#  type = string
+#  description = "AMI version for worker ami."
+#}
+
+variable "source_ami_illumibot_owner" {
+  type        = string
+  description = "Owner of source ami for illumibot."
+  default     = "amazon"
+}
+
+variable "source_ami_illumibot" {
+  type        = string
+  description = "Source ami to use for illumibot ami"
 }
 
