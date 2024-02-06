@@ -1,6 +1,7 @@
 PACKER_VERSION := 1.7.4
 KERNEL := $(shell uname -s | tr A-Z a-z)
 ARCH := $(shell uname -m)
+ECR_TOKEN := $(shell aws ecr get-login-password --region us-east-1)
 
 ifeq (${ARCH},arm64)
 	ARCH_ALT=arm64
@@ -107,7 +108,7 @@ al2023gpu: check-region init validate release-al2023.auto.pkrvars.hcl
 
 .PHONY: illumibot
 illumibot: check-region init validate release.auto.pkrvars.hcl
-	./packer build -only="amazon-ebs.illumibot" -var "region=${REGION}" -var-file illumibot.pkrvars.hcl .
+	./packer build -only="amazon-ebs.illumibot" -var "region=${REGION}" -var-file illumibot.pkrvars.hcl -var "ecr_token=$(ECR_TOKEN)" .
 
 
 shellcheck:
