@@ -11,11 +11,12 @@ source "amazon-ebs" "illumibot" {
   security_group_id = var.security_group_id
   launch_block_device_mappings {
     #volume_size           = var.block_device_size_gb
-    volume_size           = 60
+    volume_size           = 300
     delete_on_termination = true
-    volume_type           = "io2"
+    volume_type           = "gp3"
     device_name           = "/dev/xvda"
-    iops                  = 3000
+    iops                  = 4000
+    throughput            = 1000
   }
   region = var.region
   source_ami_filter {
@@ -27,6 +28,14 @@ source "amazon-ebs" "illumibot" {
   }
   ssh_interface = "public_ip"
   ssh_username  = "ec2-user"
+  temporary_iam_instance_profile_policy_document {
+    Statement {
+      Action = ["s3:*"]
+      Effect = "Allow"
+      Resource = ["*"]
+    }
+    Version = "2012-10-17"
+  }
   tags = {
     os_version          = "Amazon Linux 2"
     source_image_name   = "{{ .SourceAMIName }}"
@@ -49,6 +58,10 @@ build {
   }
 
   provisioner "shell" {
+    script = "scripts/install-illumibot-models.sh"
+  }
+
+  provisioner "shell" {
     environment_vars = [
       "REGION=${var.region}",
       "IMAGE_REGISTRY=${var.image_registry}",
@@ -66,3 +79,4 @@ build {
   }
 
 }
+
