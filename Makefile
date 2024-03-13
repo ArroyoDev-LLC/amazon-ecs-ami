@@ -48,7 +48,8 @@ packer-fmt: packer
 
 .PHONY: validate
 validate: check-region init
-	./packer validate -var-file illumibot.pkrvars.hcl -var "region=${REGION}" .
+	./packer validate --syntax-only -var-file illumibot.pkrvars.hcl -var "region=${REGION}" .
+	- ./packer validate -var-file illumibot.pkrvars.hcl -var "region=${REGION}" .
 
 .PHONY: al1
 al1: check-region init validate release-al1.auto.pkrvars.hcl
@@ -106,9 +107,13 @@ al2023neu: check-region init validate release-al2023.auto.pkrvars.hcl
 al2023gpu: check-region init validate release-al2023.auto.pkrvars.hcl
 	./packer build -only="amazon-ebs.al2023gpu" -var "region=${REGION}" .
 
+.PHONY: illumibot-models
+illumibot-models: check-region init validate release.auto.pkrvars.hcl
+	./packer build -only="amazon-ebs.illumibot-models" -var "region=${REGION}" -var-file illumibot.pkrvars.hcl -var "ecr_token=$(ECR_TOKEN)" .
+
 .PHONY: illumibot
-illumibot: check-region init validate release.auto.pkrvars.hcl
-	./packer build -only="amazon-ebs.illumibot" -var "region=${REGION}" -var-file illumibot.pkrvars.hcl -var "ecr_token=$(ECR_TOKEN)" .
+illumibot: check-region init validate
+	./packer build -only="amazon-ebs.illumibot-worker" -var "region=${REGION}" -var-file illumibot.pkrvars.hcl -var "ecr_token=$(ECR_TOKEN)" .
 
 
 shellcheck:
