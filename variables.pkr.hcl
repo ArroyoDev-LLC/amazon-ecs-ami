@@ -311,10 +311,10 @@ variable "image_local_name" {
   default     = ""
 }
 
-#variable "ami_version_illumibot" {
-#  type = string
-#  description = "AMI version for worker ami."
-#}
+variable "ami_version_illumibot" {
+  type = string
+  description = "AMI version for worker ami."
+}
 
 variable "source_ami_illumibot_owner" {
   type        = string
@@ -322,8 +322,18 @@ variable "source_ami_illumibot_owner" {
   default     = "amazon"
 }
 
+variable "source_ami_illumibot_worker_owner" {
+  type        = string
+  description = "Owner of source ami for illumibot worker final image."
+}
+
 variable "source_ami_illumibot" {
   type        = string
   description = "Source ami to use for illumibot ami"
+}
+
+variable "models_ami_version" {
+  type        = string
+  description = "Outputted models AMI version."
 }
 
