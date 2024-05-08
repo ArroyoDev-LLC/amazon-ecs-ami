@@ -119,6 +119,11 @@ build {
     only   = ["amazon-ebs.illumibot-worker"]
   }
 
+  provisioner "shell" {
+    script = "scripts/setup-illumibot-fsx.sh"
+    only   = ["amazon-ebs.illumibot-worker"]
+  }
+
   post-processor "manifest" {
     output     = "manifest.json"
     strip_path = true
