@@ -17,7 +17,7 @@ source "amazon-ebs" "illumibot" {
     volume_type           = "gp3"
     device_name           = "/dev/xvda"
     #iops                  = 4000
-    throughput            = 500
+    throughput = 500
   }
   region = var.region
   #  source_ami_filter {
@@ -92,6 +92,10 @@ build {
     #    }
   }
 
+  provisioner "shell" {
+    script = "scripts/setup-illumibot-fsx.sh"
+    only   = ["amazon-ebs.illumibot-worker"]
+  }
 
   provisioner "shell" {
     environment_vars = [
@@ -116,11 +120,6 @@ build {
       "ECR_TOKEN=${var.ecr_token}"
     ]
     script = "scripts/bake-docker.sh"
-    only   = ["amazon-ebs.illumibot-worker"]
-  }
-
-  provisioner "shell" {
-    script = "scripts/setup-illumibot-fsx.sh"
     only   = ["amazon-ebs.illumibot-worker"]
   }
 
