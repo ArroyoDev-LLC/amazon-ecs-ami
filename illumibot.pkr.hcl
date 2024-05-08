@@ -14,10 +14,10 @@ source "amazon-ebs" "illumibot" {
     #volume_size           = var.block_device_size_gb
     volume_size           = 60
     delete_on_termination = true
-    volume_type           = "io2"
+    volume_type           = "gp3"
     device_name           = "/dev/xvda"
-    iops                  = 4000
-    #throughput            = 1000
+    #iops                  = 4000
+    throughput            = 500
   }
   region = var.region
   #  source_ami_filter {
