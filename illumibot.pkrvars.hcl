@@ -1,4 +1,4 @@
-gpu_instance_types         = ["g5.2xlarge"]
+gpu_instance_types         = ["g6.xlarge"]
 image_tag                  = "v14.0-cuda11.8"
 image_local_name           = "illumibot-worker:v14.0-cuda11.8"
 image_repository           = "illumibot-worker"
