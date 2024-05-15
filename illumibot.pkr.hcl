@@ -29,14 +29,14 @@ source "amazon-ebs" "illumibot" {
   #  }
   ssh_interface = "public_ip"
   ssh_username  = "ec2-user"
-  #temporary_iam_instance_profile_policy_document {
-  #  Statement {
-  #    Action = ["s3:*"]
-  #    Effect = "Allow"
-  #    Resource = ["*"]
-  #  }
-  #  Version = "2012-10-17"
-  #}
+  temporary_iam_instance_profile_policy_document {
+    Statement {
+      Action = ["s3:*", "fsx:*"]
+      Effect = "Allow"
+      Resource = ["*"]
+    }
+    Version = "2012-10-17"
+  }
   tags = {
     os_version          = "Amazon Linux 2"
     source_image_name   = "{{ .SourceAMIName }}"
@@ -110,18 +110,18 @@ build {
     only   = ["amazon-ebs.illumibot-models"]
   }
 
-  provisioner "shell" {
-    environment_vars = [
-      "REGION=${var.region}",
-      "IMAGE_REGISTRY=${var.image_registry}",
-      "IMAGE_REPOSITORY=${var.image_repository}",
-      "IMAGE_TAG=${var.image_tag}",
-      "IMAGE_LOCAL_NAME=${var.image_local_name}",
-      "ECR_TOKEN=${var.ecr_token}"
-    ]
-    script = "scripts/bake-docker.sh"
-    only   = ["amazon-ebs.illumibot-worker"]
-  }
+  # provisioner "shell" {
+  #   environment_vars = [
+  #     "REGION=${var.region}",
+  #     "IMAGE_REGISTRY=${var.image_registry}",
+  #     "IMAGE_REPOSITORY=${var.image_repository}",
+  #     "IMAGE_TAG=${var.image_tag}",
+  #     "IMAGE_LOCAL_NAME=${var.image_local_name}",
+  #     "ECR_TOKEN=${var.ecr_token}"
+  #   ]
+  #   script = "scripts/bake-docker.sh"
+  #   only   = ["amazon-ebs.illumibot-worker"]
+  # }
 
   post-processor "manifest" {
     output     = "manifest.json"
