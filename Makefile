@@ -38,6 +38,12 @@ release-al2023.auto.pkrvars.hcl:
 check-region:
 	@bash -c "if [ -z ${REGION} ]; then echo 'ERROR: REGION variable must be set. Example: \"REGION=us-west-2 make al2\"'; exit 1; fi"
 
+.PHONY: check-vars
+check-vars:
+	@bash -c "if [ -z ${ILLUMI_AMI_BUILD_DATE} ]; then echo 'ERROR: ILLUMI_AMI_BUILD_DATE variable must be set. Example: \"ILLUMI_AMI_BUILD_DATE=20241008 make illumibot\"'; exit 1; fi"
+	@bash -c "echo 'Using build date: ${ILLUMI_AMI_BUILD_DATE}'"
+	@bash -c "echo 'Using build version: ${ILLUMI_VERSION}'"
+
 .PHONY: init
 init: packer
 	./packer init .
@@ -112,8 +118,8 @@ illumibot-models: check-region init validate release.auto.pkrvars.hcl
 	./packer build -only="amazon-ebs.illumibot-models" -var "region=${REGION}" -var-file illumibot.pkrvars.hcl -var "ecr_token=$(ECR_TOKEN)" .
 
 .PHONY: illumibot
-illumibot: check-region init validate
-	./packer build -only="amazon-ebs.illumibot-worker" -var "region=${REGION}" -var-file illumibot.pkrvars.hcl -var "ecr_token=$(ECR_TOKEN)" .
+illumibot: check-region check-vars init validate
+	./packer build -only="amazon-ebs.illumibot-worker" -var "ami_version_illumibot=${ILLUMI_AMI_BUILD_DATE}" -var "image_tag=${ILLUMI_VERSION}" -var "image_local_name=illumibot-worker:${ILLUMI_VERSION}" -var "region=${REGION}" -var-file illumibot.pkrvars.hcl -var "ecr_token=$(ECR_TOKEN)" .
 
 
 shellcheck:
