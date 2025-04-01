@@ -19,6 +19,11 @@ source "amazon-ebs" "illumibot" {
     #iops                  = 4000
     throughput = 500
   }
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required" // IMDSv2
+    http_put_response_hop_limit = 2
+  }
   region = var.region
   #  source_ami_filter {
   #    filters = {
@@ -31,8 +36,8 @@ source "amazon-ebs" "illumibot" {
   ssh_username  = "ec2-user"
   temporary_iam_instance_profile_policy_document {
     Statement {
-      Action = ["s3:*", "fsx:*"]
-      Effect = "Allow"
+      Action   = ["s3:*", "fsx:*"]
+      Effect   = "Allow"
       Resource = ["*"]
     }
     Version = "2012-10-17"
