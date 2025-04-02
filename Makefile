@@ -119,7 +119,7 @@ illumibot-models: check-region init validate release.auto.pkrvars.hcl
 
 .PHONY: illumibot
 illumibot: check-region check-vars init validate
-	./packer build -only="amazon-ebs.illumibot-worker" -var "ami_version_illumibot=${ILLUMI_AMI_BUILD_DATE}" -var "image_tag=${ILLUMI_VERSION}" -var "image_local_name=illumibot-worker:${ILLUMI_VERSION}" -var "region=${REGION}" -var-file illumibot.pkrvars.hcl -var "ecr_token=$(ECR_TOKEN)" .
+	./packer build -only="amazon-ebs.illumibot-worker" -var "ami_version_illumibot=${ILLUMI_AMI_BUILD_DATE}" -var "image_tag=${ILLUMI_VERSION}" -var "image_local_name=illumibot-worker:${ILLUMI_VERSION}" -var "region=${REGION}" -var-file illumibot.pkrvars.hcl -var "ecr_token=$(ECR_TOKEN)" -var "security_group_id=$(AWS_SECURITY_GROUP)" -var "subnet_id=$(AWS_SUBNET_ID)" -var "vpc_id=$(AWS_VPC_ID)" .
 
 
 shellcheck:
